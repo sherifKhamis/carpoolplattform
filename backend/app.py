@@ -16,8 +16,22 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize the database with the Flask app
 db = SQLAlchemy(app)
 
+# Import models to register them with SQLAlchemy
+from models import User, Ride, Vehicle, Passenger
+
 # Initialize Flask-Migrate for database migrations
 migrate = Migrate(app, db)
+
+# Import and register blueprints
+from routes.user import user_bp
+from routes.ride import ride_bp
+from routes.vehicle import vehicle_bp
+from routes.passenger import passenger_bp
+
+app.register_blueprint(user_bp, url_prefix='/users')
+app.register_blueprint(ride_bp, url_prefix='/rides')
+app.register_blueprint(vehicle_bp, url_prefix='/vehicles')
+app.register_blueprint(passenger_bp, url_prefix='/passengers')
 
 # Define a route for the home page
 @app.route('/')
